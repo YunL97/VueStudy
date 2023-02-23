@@ -28,3 +28,39 @@ new Vue({
 })
 //message가 바뀔때마다 watch문 실행
 ```
+* store란: vuex라는 라이브러리를 사용 -> 리덕스 같은거인듯 ?
+* vuex
+* state: 여러 컴포넌트간의 공유되는 데이터
+```
+this.$store.state.counter //를 사용해서 가져옴
+```
+* mutation: action은 nutation 접근할 수 있도록 인자 제공, 매개변수를 commit라는api를 이용해서 mutation에 data를 넘긴다. -> 인자로 받은 결과로 state속성값을 변경한다
+  * 주로 state를 변경시키는 역할을 한다. 
+```
+setMenuList(state, data) {
+      state.menuList = data
+    },
+  
+  //다른파일에서 실행
+  this.$store.commit('setMenuList', 데이터)
+```
+* action: 주로 mutation을 실행시키는 역할을한다. api호출은 actions에서 선언, action을 호출할때는 dispatch 호출
+```
+setMenuId(context, data) {
+      context.commit('setMenuId', data)
+    },
+```
+* Getters: 컴포넌트 데이터 불러올 대 사용
+```
+getters: {
+  doubleCounter: function (state) {
+    return state.counter * 2;
+  }
+},
+
+computed: {
+  doubleCounter() {
+    return this.$store.getters.doubleCounter;
+  }
+},
+```ㄴ
