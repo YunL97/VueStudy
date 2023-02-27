@@ -71,3 +71,12 @@ this.addUsers(userObj) 로 사용가능, 그럼 해당 vue 인스턴스에 선�
 ```
 * created: 인스턴스가 작성된 후 동기적으로 호출된다. 부모 자식 관계의 컴퍼넌트가 렌더링될때 mounted보다 먼저 호촐되며 부모, 자식순으로 실행한다. 주로 데이터 초기화 선언을 created에서 많이한다. 가상돔을 건드릴 수 없음($element속성 사용x)
 * mounted: created 다음으로 호출된다. 부모, 자식 관계의 컴퍼넌트가 렌더링 될떄 created 다음으로 호출되며 자식, 부모순으로 실행, 돔 조작관련을 mounted 영역
+ * main.js: vue 실행하면 제일처음 실행 되는곳
+```
+new Vue({
+  router,
+  store,
+  render: h => h(App)
+}).$mount('#app')  //id가 app인 곳에 마운트 시키겠다는 뜻
+```
+* 
