@@ -160,4 +160,30 @@ new VueRouter({
   * 각 .vue 컴포넌트의 스코프로 좁힌 css스타일링 지원
   * 웹팩의 모듈 번들링에 대한 지원과 의존성 관리가 제공
   * 개발시 hot module replacement 지원 -> 새로고침하지 않아도 변경사항을 즉시 확인할 수 있는기능
-  * 
+  * vuex란: 뷰의 상태관리를 위한 패턴이자 라이브러리
+  * 상태관리가 필요한이유: 컴포넌트기반 프레임워크는 작은단위로 쪼개진 여러개의 컴포넌트로 화면을 구성 -> 컴포넌트간 통신이나 데이터 전달을 할때 좀더 유기적으로 관리할 필요성이 있다.
+  * 데이터 통신을 한곳에 중앙 집중식으로 관리하는것이 상태관리
+  * state: 컴포넌트간에 공유할 data
+  * view: 데이터가 필요될 template
+  * actions: 사용자의 입력에 다라 반응할 methods
+  ```
+  new Vue({
+  // state
+  data() {
+    return {
+      counter: 0
+    };
+  },
+  // view
+  template: `
+    <div>{{ counter }}</div>
+  `,
+  // actions
+  methods: {
+    increment() {
+      this.counter++;
+    }
+  }
+});
+  ```
+  *  
