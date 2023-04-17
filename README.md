@@ -186,4 +186,35 @@ new VueRouter({
   }
 });
   ```
-  *  
+*  화면단위를 쪼갤수록 한컴포넌트의 데이터를 다른컴포넌트의 화면에서 표시할일이많아짐 => 최상위 컴포넌트의 맨아래까지 전달하기 위해 모든 컴포넌트에 PROPS, EVENT EMIT를 선언해줘야함 => vuex 상태관리
+```   
+Vue.use(Vuex);
+
+export const store = new Vuex.Store({
+  state: {
+    counter: 0
+  }
+});
+
+port Vue from "vue";
+import App from "./App.vue";
+// store.js를 불러오는 코드
+import { store } from "./store";
+
+new Vue({
+  el: "#app",
+  // 뷰 인스턴스의 store 속성에 연결
+  store: store,
+  render: h => h(App)
+});
+```
+* 접근법
+```
+ Parent counter : {{ $store.state.counter }} <br />
+  methods: {
+    addCounter() {
+      this.$store.state.counter++;
+    },
+```
+* 이처럼 뷰엑스를 사용하면 여러 컴포넌트간에 공유할 데이터를 효율적으로 관리가능
+* 
