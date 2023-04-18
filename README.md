@@ -217,4 +217,91 @@ new Vue({
     },
 ```
 * 이처럼 뷰엑스를 사용하면 여러 컴포넌트간에 공유할 데이터를 효율적으로 관리가능
-* 
+* getter: computed 속성을 사용
+```
+<!-- App.vue -->
+<div id="app">
+  Parent counter : {{ parentCounter }}
+  <!-- ... -->
+</div>
+
+<!-- Child.vue -->
+<div>
+  Child counter : {{ childCounter }}
+  <!-- ... -->
+</div>
+
+// App.vue
+computed: {
+  parentCounter() {
+    return this.$store.state.counter;
+  }
+},
+
+// Child.vue
+computed: {
+  childCounter() {
+    return this.$store.state.counter;
+  }
+},
+```
+* gettsrs를 vuex에 추가해도됨
+```
+// store.js
+export const store = new Vuex.Store({
+  // ...
+  getters: {
+    getCounter: function (state) {
+      return state.counter;
+    }
+  }
+});
+
+// App.vue
+
+computed: {
+  parentCounter() {
+    this.$store.getters.getCounter;
+  }
+},
+
+
+```
+* getters장점: 단순히 state 값을 반환하는 것뿐만아니라 getters에 선언된 속성에서 filter(), reverse()등의 추가적인 계산 로직이 들어갈때 발휘
+* mutation: vuex의 데이터, 즉 state값을 변경하는 로직들을 의미 method에 등록한다
+* Actions과의 차이점: 인자르 받아 vuex에 넘겨줄소 있고 computed가 아닌 method에 등록
+* return this.$store.state.counter++; 같이 컴포넌트에서 직접 state에 접근하여 변경하는것은 안티패턴으로 vue의 reactivity 체계와 상태관리 패턴에 맞지않은 구현방식 => 여러개의 컴포넌트에서 같은 state값을 동시에 제어하게되면 state 갑싱 어느컴포넌트에서 호출해서 변경된건지 추적이 어렵다. -> 상태변화를 명시적으로 수행함으로서 테스팅, 디버깅, reactive성질 준수의 혜택이 있다.
+```
+// store.js
+export const store = new Vuex.Store({
+  // ...
+  mutations: {
+    addCounter: function (state, payload) {
+      return state.counter++;
+    }
+  }
+});
+
+<!-- App.vue -->
+<div id="app">
+  Parent counter : {{ parentCounter }} <br>
+  <button @click="addCounter">+</button>
+  <!-- ... -->
+</div>
+
+methods: {
+  addCounter() {
+    this.$store.state.counter++;
+  }
+},
+
+// App.vue
+methods: {
+  addCounter() {
+    // this.$store.state.counter++; -> 접근불가
+    this.$store.commit('addCounter');
+  }
+},
+```
+* mutation 인자값 넘기기부터 시작
+
