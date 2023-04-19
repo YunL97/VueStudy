@@ -303,5 +303,65 @@ methods: {
   }
 },
 ```
-* mutation 인자값 넘기기부터 시작
+* mutation에 인자값 넘기는법
+```
+this.$store.commit('addCounter', 10);
+this.$store.commit('addCounter', {
+  value: 10,
+  arr: ["a", "b", "c"]
+});
+
+//받는법
+mutations: {
+  // payload 가 { value : 10 } 일 경우
+  addCounter: function (state, payload) {
+    state.counter = payload.value;
+  }
+}
+```
+* action: mutaions에는 순차적인 로직들만 선언하고 actions 에는 비 순차적 똔느 비동기 처리 로직들을 선언한다.
+* mutation이 있는데 action을 사용하는 이유는 mutation은 역할자체가 state관리에 주안점을 두고있고 상태관리 자체가 한 데이터에 대해 여러개의 컴포넌트가 관여하는것을 효율적으로 관리하기 위함인데 mutation에 비동기 처리 로직들을 ㅊ포함하면 같은 값아대해 여러개의 컴포넌트에서 변경을 요청했을때 변경 순서 파악이 어렵기 때문
+* 따라서 비동기처리로직은 Actions, 동기처리로직은 mutations에 나눠 구현한다 -> ex) setTimeout(), http통신 등등 처리결과를 받아올 타이밍이 예측되지 않는로직을 actions에선언
+* 
+```
+// store.js
+export const store = new Vuex.Store({
+  // ...
+  mutations: {
+    addCounter: function (state, payload) {
+      return state.counter++;
+    }
+  },
+  actions: {
+    addCounter: function (context) {
+      // commit 의 대상인 addCounter 는 mutations 의 메서드를 의미한다.
+      return context.commit('addCounter');
+    }
+  }
+});
+```
+```
+/ store.js
+export const store = new Vuex.Store({
+  actions: {
+    getServerData: function (context) {
+      return axios.get("sample.json").then(function() {
+        // ...
+      });
+    },
+    delayFewMinutes: function (context) {
+      return setTimeout(function () {
+        commit('addCounter');
+      }, 1000);
+    }
+  }
+});
+```
+* actions를 호출할때는 dispatch 사용
+```
+ addCounter() {
+    this.$store.commit('addCounter');
+  }
+```
+* 
 
