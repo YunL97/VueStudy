@@ -363,5 +363,35 @@ export const store = new Vuex.Store({
     this.$store.commit('addCounter');
   }
 ```
-* 
+* actions에 인자값 넘기는법
+```
+\<button @click="asyncIncrement({ by: 50, duration: 500 })">Increment\</button>
 
+export const store = new Vuex.Store({
+  actions: {
+    // payload 는 일반적으로 사용하는 인자 명
+    asyncIncrement: function (context, payload) {
+      return setTimeout(function () {
+        context.commit('increment', payload.by);
+      }, payload.duration);
+    }
+  }
+})
+```
+
+* 네비게이션 가드: 뷰 ㄹ우터로 특정 url에 접근할 때 해당 url의 접근을 막는 방법을 말한다 ex) 사용자의 인증정보가 없으면 특정 페이지에 접근하지 못하게 할때 사용하는 기술
+* 종류
+  * 애플리케이션 전역에서 동작하는 전역가드
+  * 특정 url에서만 동작하는 라우터가드
+  * 라우터 컴포넌트 안에 정의하는 컴포넌트 가드
+
+* 전역가드 설정하는법
+```
+var router = new VueRouter();
+
+router.beforeEach(function (to, from, next) {
+  // to : 이동할 url
+  // from : 현재 url
+  // next : to에서 지정한 url로 이동하기 위해 꼭 호출해야 하는 함수
+});
+```
