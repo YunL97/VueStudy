@@ -184,8 +184,9 @@ new VueRouter({
       this.counter++;
     }
   }
-});
-  ```
+  });
+
+
 *  화면단위를 쪼갤수록 한컴포넌트의 데이터를 다른컴포넌트의 화면에서 표시할일이많아짐 => 최상위 컴포넌트의 맨아래까지 전달하기 위해 모든 컴포넌트에 PROPS, EVENT EMIT를 선언해줘야함 => vuex 상태관리
 ```   
 Vue.use(Vuex);
@@ -394,4 +395,40 @@ router.beforeEach(function (to, from, next) {
   // from : 현재 url
   // next : to에서 지정한 url로 이동하기 위해 꼭 호출해야 하는 함수
 });
+```
+
+* router.beforeEach()를 호출하고 나면 모든 라우팅이 대기 상태, 원래 url이 변경되고 나면 해당 url에 따라 화면이 자연스럽게 이동 but 전역가드 설정이 되어있으면 화면이 전환 되지 않음 -> next() 가호출되면 전환
+
+* 로그인정보 있을때와 없을때 전환 하는코드
+```
+router.beforeEach(function (to, from, next) {
+  // to: 이동할 url에 해당하는 라우팅 객체
+  if (to.matched.some(function(routeInfo) {
+    return routeInfo.meta.authRequired;
+  })) {
+    // 이동할 페이지에 인증 정보가 필요하면 경고 창을 띄우고 페이지 전환은 하지 않음
+    alert('Login Please!');
+  } else {
+    console.log("routing success : '" + to.path + "'");
+    next(); // 페이지 전환
+  };
+});
+```
+* 컴포넌트가드: 라우터로 지정된 특정 컴포넌트에 가드를 설정하는 법
+```
+const Login = {
+  template: '<p>Login Component</p>',
+  beforeRouteEnter (to, from, next) {
+    // Login 컴포넌트가 화면에 표시되기 전에 수행될 로직
+    // Login 컴포넌트는 아직 생성되지 않은 시점
+  },
+  beforeRouteUpdate (to, from, next) {
+    // 화면에 표시된 컴포넌트가 변경될 때 수행될 로직
+    // `this`로 Login 컴포넌트를 접근할 수 있음
+  },
+  beforeRouteLeave (to, from, next) {
+    // Login 컴포넌트를 화면에 표시한 url 값이 변경되기 직전의 로직
+    // `this`로 Login 컴포넌트를 접근할 수 있음
+  }
+}
 ```
