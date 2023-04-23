@@ -432,3 +432,34 @@ const Login = {
   }
 }
 ```
+* Slot: 컴포넌트의 재사용성을 높여주는 기능 -> 특정컴포넌트에 등록되 하위 컴포넌트의 마크업을 확장하거나 재정의 할수있다.
+```
+<!-- ButtonTab.vue -->
+<template>
+  <div class="tab panel">
+    <!-- 탭 헤더 -->
+    <slot></slot>
+    <!-- 탭 본문 -->
+    <div class="content">
+      Tab Contents
+    </div>
+  </div>
+</template>
+```
+* slot태그로 빈칸을 남겨둠, 영역을 구현하지 않으면 해당부분은 공백
+* 슬롯을 사용하면 컴포넌트의 특정 마크업 영역을 재정의하여 각기다르게 표현가능
+* vmodel: Form 요소를 개발할때 사용
+```
+<input v-model="inputText">
+
+new Vue({
+  data: {
+    inputText: ''
+  }
+})
+
+```
+* v-model 속성은 v-bind 와 v-on 기능의 조합으로 동작 -> 일일이 v-bind와 v-on 속성을 다 지정해주지 않아도 편하개 개발할수있게 고안된 문법
+* v-bind: 뷰 인스턴스의 데이터속성을 해당 html요소에 연결할때 사용
+* v-on: 해당 html 요소의 이벤트를 뷰 인스턴스의 로직과 연결할때 사용
+* 한국어를 사용할때는 v-model보다 v-bind와 v-on 사용이 나음
